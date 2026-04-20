@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "飞猪运营助手",
+  "version": "0.2.2",
+  "description": "在飞猪相关页面中注入运营面板，并通过浏览器插件入口调用本地 Flask 服务。",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*",
+    "https://*.fliggy.com/*",
+    "https://*.taobao.com/*",
+    "https://*.alitrip.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "飞猪运营助手",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.fliggy.com/*",
+        "https://*.taobao.com/*",
+        "https://*.alitrip.com/*"
+      ],
+      "js": [
+        "content/page-context.js",
+        "content/result-view.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "bridge.html",
+        "bridge.js"
+      ],
+      "matches": [
+        "https://*.fliggy.com/*",
+        "https://*.taobao.com/*",
+        "https://*.alitrip.com/*"
+      ]
+    }
+  ]
+}
+

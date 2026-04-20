@@ -1,0 +1,485 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>飞猪运营助手</title>
+    <style>
+      :root {
+        --bg-top: #fffaf3;
+        --bg-bottom: #fff0d6;
+        --panel: rgba(255, 255, 255, 0.88);
+        --panel-strong: rgba(255, 248, 236, 0.98);
+        --text: #5f370f;
+        --muted: #8d6542;
+        --accent: #ef6c00;
+        --accent-strong: #c65a00;
+        --line: rgba(167, 115, 54, 0.18);
+        --ok: #0f9d58;
+        --error: #d93025;
+      }
+      body {
+        margin: 0;
+        width: 400px;
+        min-height: 780px;
+        background:
+          radial-gradient(circle at top right, rgba(255, 183, 77, 0.18), transparent 24%),
+          linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+        color: var(--text);
+        font: 14px/1.5 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      }
+      main {
+        padding: 14px;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      .lead {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .card {
+        margin-top: 14px;
+        padding: 14px;
+        border-radius: 18px;
+        background: var(--panel);
+        box-shadow: 0 12px 32px rgba(104, 54, 9, 0.1);
+      }
+      .card.hero {
+        background: linear-gradient(135deg, rgba(255, 183, 77, 0.2), rgba(255, 255, 255, 0.94));
+      }
+      .section-title {
+        margin-bottom: 6px;
+        font-size: 12px;
+        color: #7c4b14;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .hero-title {
+        font-size: 17px;
+      }
+      .section-note {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: #d97706;
+      }
+      .dot.ok {
+        background: var(--ok);
+      }
+      .dot.error {
+        background: var(--error);
+      }
+      .grid {
+        display: grid;
+        gap: 10px;
+      }
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+      .field label {
+        color: #7c4b14;
+        font-size: 12px;
+      }
+      textarea,
+      input[type="text"],
+      input[type="password"],
+      input[type="url"],
+      input[type="number"],
+      select {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 10px 12px;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--text);
+        font: 13px/1.5 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      }
+      textarea {
+        min-height: 72px;
+        resize: vertical;
+      }
+      .actions {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      button {
+        border: none;
+        border-radius: 14px;
+        padding: 11px 12px;
+        background: #fff;
+        color: var(--text);
+        font: 600 13px/1.25 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+        box-shadow: inset 0 0 0 1px var(--line);
+        cursor: pointer;
+        text-align: left;
+      }
+      button.primary {
+        background: linear-gradient(135deg, #ffb648 0%, var(--accent) 100%);
+        color: #fffaf3;
+        box-shadow: none;
+      }
+      button.danger {
+        background: linear-gradient(135deg, #ff9f68 0%, #d9480f 100%);
+        color: #fffaf3;
+        box-shadow: none;
+      }
+      button.secondary {
+        background: var(--panel-strong);
+      }
+      button:disabled,
+      input:disabled,
+      textarea:disabled {
+        opacity: 0.58;
+        cursor: wait;
+      }
+      .tip {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .summary-box {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 14px;
+        background: rgba(255, 183, 77, 0.12);
+        font-size: 12px;
+      }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .summary-pill {
+        padding: 8px 10px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.78);
+      }
+      .summary-label {
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .summary-value {
+        margin-top: 4px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .workflow-tools {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .workflow-tools button {
+        padding: 10px;
+        font-size: 12px;
+      }
+      .workflow-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .workflow-item {
+        border-radius: 14px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.12);
+      }
+      .workflow-item-top {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+      .workflow-item-top input[type="checkbox"] {
+        margin-top: 3px;
+      }
+      .workflow-item-name {
+        font-weight: 700;
+      }
+      .workflow-item-meta {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .price-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+        font-size: 12px;
+      }
+      .price-grid-label {
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+      .meta {
+        display: grid;
+        gap: 6px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+      }
+      .label {
+        flex: 0 0 70px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .value {
+        flex: 1;
+        word-break: break-word;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .tag {
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255, 184, 72, 0.22);
+        color: #7c4b14;
+        font-size: 12px;
+      }
+      .mono {
+        white-space: pre-wrap;
+        word-break: break-word;
+        font: 12px/1.5 Consolas, "Courier New", monospace;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 700;
+        list-style: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      .details-body {
+        margin-top: 12px;
+      }
+      .result {
+        min-height: 72px;
+        word-break: break-word;
+      }
+      .empty-state {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>飞猪运营助手</h1>
+      <p class="lead">把竞对抓价、建议调价和官网直改，收进同一个原生 Popup。</p>
+
+      <div class="card">
+        <div class="status">
+          <span class="dot" id="status-dot"></span>
+          <span id="status-text">检查中...</span>
+        </div>
+      </div>
+
+      <div class="card hero" id="auth-card">
+        <h2 class="section-title">账号登录</h2>
+        <p class="hero-title" id="auth-title">登录后选择店铺，再进入插件工作台。</p>
+        <p class="section-note" id="auth-note">当前版本按账号加载可访问店铺，并按店铺读取竞对配置。</p>
+        <div class="grid" id="auth-login-form">
+          <div class="field">
+            <label for="auth-base-url-input">后端地址</label>
+            <input id="auth-base-url-input" type="url" placeholder="http://127.0.0.1:8000">
+          </div>
+          <div class="field">
+            <label for="auth-tenant-input">Tenant ID</label>
+            <input id="auth-tenant-input" type="number" min="1" step="1" placeholder="1">
+          </div>
+          <div class="field">
+            <label for="auth-username-input">用户名</label>
+            <input id="auth-username-input" type="text" placeholder="请输入用户名">
+          </div>
+          <div class="field">
+            <label for="auth-password-input">密码</label>
+            <input id="auth-password-input" type="password" placeholder="请输入密码">
+          </div>
+        </div>
+        <div class="summary-box hidden" id="auth-session-box"></div>
+        <div class="grid two hidden" id="shop-switch-box" style="margin-top: 12px;">
+          <div class="field">
+            <label for="shop-select">当前店铺</label>
+            <select id="shop-select"></select>
+          </div>
+          <div class="field">
+            <label for="auth-current-user">当前账号</label>
+            <input id="auth-current-user" type="text" readonly>
+          </div>
+        </div>
+        <div class="actions" style="margin-top: 12px;">
+          <button class="primary" id="auth-login-btn" type="button">登录并进入</button>
+          <button class="secondary hidden" id="auth-refresh-btn" type="button">刷新会话</button>
+          <button class="danger hidden" id="auth-logout-btn" type="button">退出登录</button>
+        </div>
+      </div>
+
+      <div id="app-shell" class="hidden">
+      <div class="card hero">
+        <h2 class="section-title">竞对驱动改价</h2>
+        <p class="hero-title">输入竞对酒店名，自动抓价并生成建议价。</p>
+        <p class="section-note">&#20808;&#25235;&#21462;&#31454;&#23545;&#25151;&#22411;&#20215;&#65292;&#20877;&#32467;&#21512;&#20320;&#30340;&#25151;&#22411;&#26144;&#23556;&#21644;&#24211;&#23384;&#29983;&#25104;&#24314;&#35758;&#65307;&#24050;&#32500;&#25252;&#8220;&#25105;&#30340;&#25151;&#22411;&#8221;&#26102;&#20250;&#20248;&#20808;&#25353;&#20320;&#30340;&#25151;&#22411;&#21517;&#31216;&#36755;&#20986;&#12290;</p>
+        <div class="grid">
+          <div class="field">
+            <label for="competitor-name-input">竞对酒店名称</label>
+            <input id="competitor-name-input" type="text" placeholder="例如：杭州君悦酒店">
+          </div>
+          <div class="field">
+            <label for="workflow-price-url-input">改价官网链接（可选）</label>
+            <input id="workflow-price-url-input" type="url" placeholder="https://...">
+          </div>
+        </div>
+        <div class="actions" style="margin-top: 12px;">
+          <button class="primary" id="workflow-analyze-btn" type="button">开始分析</button>
+          <button class="secondary" id="workflow-fill-btn" type="button">按建议价回填</button>
+          <button class="danger" id="workflow-submit-btn" type="button">一键确认改价</button>
+        </div>
+        <div id="workflow-box" class="summary-box">
+          <div class="empty-state">先点击上方“抓取配置房型价”，再生成建议价；已维护我的房型映射时会优先按这些房型输出。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">配置竞对房型价</h2>
+        <p class="section-note">&#36825;&#37324;&#35835;&#21462;&#24403;&#21069;&#24215;&#38138;&#24050;&#20445;&#23384;&#30340;&#31454;&#23545;&#37202;&#24215;&#37197;&#32622;&#65292;&#24182;&#25353;&#37197;&#32622;&#35814;&#24773;&#39029;&#25235;&#21462;&#31454;&#23545;&#25151;&#22411;&#20215;&#12290;</p>
+        <div id="configured-hotels-box" class="summary-box">
+          <div class="empty-state">读取竞对酒店配置中...</div>
+        </div>
+        <div class="actions" style="margin-top: 12px; grid-template-columns: repeat(4, 1fr);">
+          <button class="primary" id="room-prices-btn" type="button">抓取配置房型价</button>
+          <button class="secondary" id="refresh-room-config-btn" type="button">&#21047;&#26032;&#31454;&#23545;&#37197;&#32622;</button>
+          <button class="secondary" id="debug-room-config-btn" type="button">&#35786;&#26029;&#31454;&#23545;&#37197;&#32622;</button>
+          <button class="secondary" id="open-room-settings-btn" type="button">维护竞对酒店</button>
+        </div>
+      </div>
+
+            <div class="card">
+        <h2 class="section-title">竞对建议价</h2>
+        <p class="section-note">&#24314;&#35758;&#20248;&#20808;&#20351;&#29992;&#35774;&#32622;&#39029;&#37324;&#32500;&#25252;&#30340;&#8220;&#25105;&#30340;&#25151;&#22411;&#21517;&#31216; + &#24403;&#21069;&#20215; + &#31454;&#23545;&#25151;&#22411;&#21305;&#37197;&#35789;&#8221;&#65307;&#36825;&#37324;&#30340;&#25972;&#24215;&#20828;&#24213;&#20215;&#20165;&#22312;&#27809;&#26377;&#25163;&#24037;&#25151;&#22411;&#20215;&#26102;&#20316;&#20026;&#34917;&#20805;&#12290;</p>
+        <div class="grid two">
+          <div class="field">
+            <label for="competitor-advice-total-rooms-input">总房量</label>
+            <input id="competitor-advice-total-rooms-input" type="number" min="1" step="1" placeholder="例如：120">
+          </div>
+          <div class="field">
+            <label for="competitor-advice-available-rooms-input">可售房量</label>
+            <input id="competitor-advice-available-rooms-input" type="number" min="0" step="1" placeholder="例如：36">
+          </div>
+          <div class="field">
+            <label for="competitor-advice-current-price-input">整店兜底价（选填）</label>
+            <input id="competitor-advice-current-price-input" type="number" min="1" step="0.01" placeholder="没有本店房型快照时才使用，例如：429">
+          </div>
+          <div class="field">
+            <label for="competitor-advice-strategy-select">策略</label>
+            <select id="competitor-advice-strategy-select">
+              <option value="balanced">balanced</option>
+              <option value="conservative">conservative</option>
+              <option value="aggressive">aggressive</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-top: 10px;">
+          <label for="competitor-advice-hotel-input">指定竞对酒店（可选）</label>
+          <input id="competitor-advice-hotel-input" type="text" placeholder="留空则综合本次抓到的所有竞对酒店">
+        </div>
+        <div class="actions" style="margin-top: 12px; grid-template-columns: 1fr;">
+          <button class="primary" id="competitor-advice-btn" type="button">生成建议价</button>
+        </div>
+        <div id="competitor-advice-box" class="summary-box">
+          <div class="empty-state">先点击上方“抓取配置房型价”，再生成建议价。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">目标价直改</h2>
+        <p class="section-note">&#36866;&#29992;&#20110;&#20320;&#24050;&#32463;&#30830;&#35748;&#32479;&#19968;&#30446;&#26631;&#20215;&#30340;&#22330;&#26223;&#65292;&#25554;&#20214;&#20250;&#30452;&#25509;&#25226;&#30446;&#26631;&#20215;&#25552;&#20132;&#21040;&#21830;&#23478;&#25913;&#20215;&#39029;&#12290;</p>
+        <div class="grid">
+          <div class="field">
+            <label for="uniform-price-url-input">调价官网链接</label>
+            <input id="uniform-price-url-input" type="url" placeholder="https://...">
+          </div>
+          <div class="field">
+            <label for="uniform-target-price-input">目标价格</label>
+            <input id="uniform-target-price-input" type="number" min="1" step="0.01" placeholder="例如：429">
+          </div>
+        </div>
+        <div class="actions" style="margin-top: 12px; grid-template-columns: 1fr;">
+          <button class="primary" id="uniform-submit-btn" type="button">直接改价</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <details>
+          <summary>快捷动作</summary>
+          <div class="details-body grid">
+            <div class="actions">
+              <button id="status-btn" type="button">检查服务</button>
+              <button id="refresh-btn" type="button">刷新页面识别</button>
+              <button class="primary" id="collect-btn" type="button">按当前页采集</button>
+              <button id="panel-btn" type="button">打开页面面板</button>
+              <button id="options-btn" type="button">打开设置页</button>
+            </div>
+            <div class="field">
+              <label for="targets-input">当前页采集指定酒店</label>
+              <textarea id="targets-input" placeholder="一行一个酒店名，也支持逗号分隔"></textarea>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">当前页面</h2>
+        <div id="page-box">读取当前标签页中...</div>
+      </div>
+
+      <div class="card">
+        <details>
+          <summary>当前配置</summary>
+          <div class="details-body">
+            <pre class="mono" id="config-box">读取配置中...</pre>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">返回结果</h2>
+        <div class="result" id="result-box">尚未执行动作。</div>
+      </div>
+      </div>
+    </main>
+    <script src="content/result-view.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
+
+
