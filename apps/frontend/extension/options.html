@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>飞猪运营助手设置</title>
+    <style>
+      :root {
+        --bg: #f8efe2;
+        --panel: rgba(255, 255, 255, 0.82);
+        --text: #5f370f;
+        --muted: #8d6542;
+        --accent: #ef6c00;
+        --line: rgba(167, 115, 54, 0.24);
+      }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top right, rgba(255, 183, 77, 0.22), transparent 24%),
+          linear-gradient(180deg, #fffaf4 0%, var(--bg) 100%);
+        color: var(--text);
+        font: 15px/1.5 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 40px 24px 56px;
+      }
+      .page-back {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 20;
+        border: none;
+        border-radius: 14px;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--text);
+        font: 600 14px/1.2 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+        box-shadow: 0 10px 24px rgba(104, 54, 9, 0.12), inset 0 0 0 1px rgba(167, 115, 54, 0.2);
+        cursor: pointer;
+      }
+      .page-back:hover {
+        background: #fffdfa;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+      }
+      p {
+        margin: 0;
+        color: var(--muted);
+      }
+      form {
+        margin-top: 24px;
+        padding: 24px;
+        border-radius: 24px;
+        background: var(--panel);
+        box-shadow: 0 20px 48px rgba(104, 54, 9, 0.12);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+      }
+      .full {
+        grid-column: 1 / -1;
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 8px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fffdfa;
+        color: var(--text);
+        font: inherit;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 96px;
+      }
+      .checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .checkbox input {
+        width: auto;
+        margin-top: 0;
+      }
+      .section {
+        margin-top: 28px;
+        padding-top: 22px;
+        border-top: 1px solid rgba(167, 115, 54, 0.16);
+      }
+      .section h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .section p {
+        margin-top: 6px;
+      }
+      .hotel-list,
+      .manual-room-list {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+      .hotel-item,
+      .manual-room-item {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.16);
+      }
+      .hotel-item-head,
+      .manual-room-item-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .hotel-item-title,
+      .manual-room-item-title {
+        font-weight: 700;
+      }
+      .hotel-item-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 14px;
+      }
+      .manual-room-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .hotel-item-grid label,
+      .manual-room-grid label {
+        font-size: 14px;
+      }
+      .hotel-empty,
+      .manual-room-empty {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.65);
+        color: var(--muted);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      button {
+        border: none;
+        border-radius: 14px;
+        padding: 12px 18px;
+        background: linear-gradient(135deg, #ffb648 0%, var(--accent) 100%);
+        color: #fffaf3;
+        font: 600 14px/1.2 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #fff;
+        color: var(--text);
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.22);
+      }
+      button.danger {
+        background: #fff7f3;
+        color: #b42318;
+        box-shadow: inset 0 0 0 1px rgba(180, 35, 24, 0.18);
+      }
+      #message {
+        margin-top: 16px;
+        min-height: 24px;
+        color: var(--muted);
+      }
+      .auth-box {
+        margin-top: 20px;
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.76);
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.12);
+      }
+      .auth-panel {
+        margin-top: 24px;
+        padding: 24px;
+        border-radius: 24px;
+        background: var(--panel);
+        box-shadow: 0 20px 48px rgba(104, 54, 9, 0.12);
+      }
+      .auth-panel-head h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+      .auth-panel-head p {
+        margin-top: 6px;
+      }
+      .auth-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+      .auth-grid .full {
+        grid-column: 1 / -1;
+      }
+      .readonly {
+        background: rgba(255, 249, 241, 0.92);
+      }
+      .hidden {
+        display: none !important;
+      }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+      .summary-card {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 20px 48px rgba(104, 54, 9, 0.08);
+      }
+      .summary-card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .summary-card-head h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .summary-card-head p {
+        margin-top: 4px;
+        font-size: 13px;
+      }
+      .summary-body {
+        min-height: 120px;
+        color: var(--muted);
+      }
+      .meta {
+        display: grid;
+        gap: 8px;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+      }
+      .row-label {
+        flex: 0 0 72px;
+        color: var(--muted);
+      }
+      .row-value {
+        flex: 1;
+        word-break: break-word;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .tag {
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255, 184, 72, 0.22);
+        color: #7c4b14;
+        font-size: 12px;
+      }
+      .mono {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font: 12px/1.5 Consolas, "Courier New", monospace;
+        color: var(--text);
+      }
+      .tip {
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      code {
+        padding: 2px 6px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.7);
+      }
+      @media (max-width: 720px) {
+        .grid,
+        .summary-grid,
+        .hotel-item-grid,
+        .manual-room-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="page-back" id="return-source-btn" type="button">返回上一页</button>
+    <main>
+      <h1>飞猪运营助手设置</h1>
+      <p>这里配置浏览器插件与本地 Flask 服务的连接信息，维护当前登录店铺的竞对酒店详情页，以及“我的房型 -> 竞对房型”长期映射。</p>
+
+      <section class="auth-panel">
+        <div class="auth-panel-head">
+          <h2>账号登录</h2>
+          <p>账号登录、当前店铺切换、当前账号状态都集中放在这里。登录使用下方当前配置里的后端地址与 Tenant。</p>
+        </div>
+
+        <div class="auth-grid">
+          <label>
+            用户名
+            <input id="auth-username-input" type="text" placeholder="请输入用户名">
+          </label>
+          <label>
+            密码
+            <input id="auth-password-input" type="password" placeholder="请输入密码">
+          </label>
+        </div>
+
+        <div id="auth-summary" class="auth-box">正在读取登录状态...</div>
+
+        <div id="auth-session-box" class="auth-grid hidden">
+          <label>
+            当前店铺
+            <select id="shop-select"></select>
+          </label>
+          <label>
+            当前账号
+            <input id="auth-current-user" class="readonly" type="text" readonly>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button id="auth-login-btn" type="button">登录并进入</button>
+          <button id="auth-refresh-btn" type="button" class="secondary">刷新会话</button>
+          <button id="auth-logout-btn" type="button" class="danger">退出登录</button>
+        </div>
+      </section>
+
+      <div class="summary-grid">
+        <section class="summary-card">
+          <div class="summary-card-head">
+            <div>
+              <h2>当前配置</h2>
+              <p>显示当前生效的服务连接、店铺和采集摘要。</p>
+            </div>
+          </div>
+          <pre id="current-config-box" class="summary-body mono">读取配置中...</pre>
+        </section>
+
+        <section class="summary-card">
+          <div class="summary-card-head">
+            <div>
+              <h2>当前页面</h2>
+              <p>显示当前窗口最近访问业务页的识别结果。</p>
+            </div>
+            <button id="refresh-page-btn" type="button" class="secondary">刷新页面</button>
+          </div>
+          <div id="current-page-box" class="summary-body">读取页面信息中...</div>
+        </section>
+      </div>
+
+      <form id="config-form">
+        <div class="grid">
+          <label class="full">
+            后端地址
+            <input id="baseUrl" name="baseUrl" type="text" placeholder="http://49.232.42.9">
+          </label>
+          <label>
+            当前 Tenant
+            <input id="tenantId" name="tenantId" type="text" placeholder="1">
+          </label>
+          <label>
+            当前 Shop
+            <input id="shopId" name="shopId" type="text" placeholder="1">
+          </label>
+          <label class="full">
+            浏览器调试地址
+            <input id="debugUrl" name="debugUrl" type="text" placeholder="http://127.0.0.1:9222">
+          </label>
+          <label class="full">
+            默认采集起始页
+            <input id="startUrl" name="startUrl" type="text" placeholder="https://hotel.fliggy.com/">
+          </label>
+          <label>
+            默认读取条数
+            <input id="latestPriceLimit" name="latestPriceLimit" type="number" min="1" max="50" step="1">
+          </label>
+          <label>
+            默认采集酒店数
+            <input id="maxHotels" name="maxHotels" type="number" min="1" max="20" step="1">
+          </label>
+          <label>
+            默认采集页数
+            <input id="maxPages" name="maxPages" type="number" min="1" max="10" step="1">
+          </label>
+          <label class="checkbox full">
+            <input id="saveResult" name="saveResult" type="checkbox">
+            采集完成后默认写回数据库
+          </label>
+        </div>
+
+        <section class="section">
+          <h2>竞对酒店配置</h2>
+          <p>每条配置保存一个竞对酒店详情页。插件会按这里的 URL 进入详情页，抓取该酒店下所有可见房型/价型价格。</p>
+          <div id="competitor-hotels" class="hotel-list"></div>
+          <div class="actions">
+            <button id="add-hotel-btn" type="button" class="secondary">新增竞对酒店</button>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>我的房型映射</h2>
+          <p>长期维护当前店铺的房型名称、类型、当前价和竞对房型匹配词。生成建议价时会优先按这里的映射返回“高级大床房”这类你的业务房型名。</p>
+          <div id="manual-room-mappings" class="manual-room-list"></div>
+          <div class="actions">
+            <button id="add-manual-room-btn" type="button" class="secondary">新增我的房型</button>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button type="submit">保存设置</button>
+          <button class="secondary" id="testBtn" type="button">测试连接</button>
+        </div>
+        <div id="message"></div>
+      </form>
+    </main>
+    <script src="options.js"></script>
+  </body>
+</html>

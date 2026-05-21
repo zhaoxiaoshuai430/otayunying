@@ -1,0 +1,195 @@
+:root {
+  --bg-top: #fffaf3;
+  --bg-bottom: #fff0d6;
+  --panel: rgba(255, 255, 255, 0.9);
+  --text: #5f370f;
+  --muted: #8d6542;
+  --accent: #ef6c00;
+  --line: rgba(167, 115, 54, 0.18);
+  --ok: #0f9d58;
+  --error: #d93025;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(255, 183, 77, 0.18), transparent 24%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  color: var(--text);
+  font: 14px/1.5 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #7c4b14;
+  box-shadow: inset 0 0 0 1px var(--line);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+button.primary {
+  background: linear-gradient(135deg, #ffb648 0%, var(--accent) 100%);
+  color: #fffaf3;
+  box-shadow: none;
+}
+
+button.full {
+  width: 100%;
+  margin-top: 12px;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 38px;
+  margin-top: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #fffdf8;
+  color: var(--text);
+}
+
+.app-shell {
+  width: min(100vw, 400px);
+  min-height: 780px;
+  padding: 14px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.15;
+}
+
+.header p,
+.card p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.icon-btn {
+  min-width: 64px;
+}
+
+.tabs,
+.card,
+.result-card {
+  margin-top: 14px;
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 12px 32px rgba(104, 54, 9, 0.1);
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 10px;
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #ffb648 0%, var(--accent) 100%);
+  color: #fffaf3;
+  box-shadow: none;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+.grid {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card,
+.result-card {
+  padding: 14px;
+}
+
+.card h2 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.form-grid label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--muted);
+}
+
+.dot.ok {
+  background: var(--ok);
+}
+
+.dot.error {
+  background: var(--error);
+}
+
+pre {
+  min-height: 160px;
+  max-height: 300px;
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #5f370f;
+  font: 12px/1.5 Consolas, "Microsoft YaHei", monospace;
+}

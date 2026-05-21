@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>飞猪运营助手</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 400px;
+        min-height: 780px;
+        overflow: hidden;
+        background: #fffaf3;
+        color: #5f370f;
+        font: 14px/1.5 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      }
+      .shell {
+        position: relative;
+        width: 400px;
+        height: 780px;
+        overflow: hidden;
+        background: #fffaf3;
+      }
+      .cloud-frame {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background: #fffaf3;
+      }
+      .toolbar {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        z-index: 2;
+        display: flex;
+        gap: 8px;
+      }
+      .toolbar button {
+        min-width: 72px;
+        border: 0;
+        border-radius: 8px;
+        padding: 8px 10px;
+        background: rgba(255, 255, 255, 0.92);
+        color: #7c4b14;
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.2), 0 8px 20px rgba(104, 54, 9, 0.12);
+        cursor: pointer;
+        font: 700 12px/1.2 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      }
+      .status {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        text-align: center;
+        background: linear-gradient(180deg, #fffaf3 0%, #fff0d6 100%);
+      }
+      .status.is-hidden {
+        display: none;
+      }
+      .status-card {
+        max-width: 320px;
+      }
+      .status-title {
+        margin: 0 0 8px;
+        color: #5f370f;
+        font-size: 20px;
+        font-weight: 800;
+      }
+      .status-note {
+        margin: 0;
+        color: #8d6542;
+        font-size: 13px;
+      }
+      .status-actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      .status-actions button {
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 12px;
+        background: #ef6c00;
+        color: #fffaf3;
+        cursor: pointer;
+        font: 700 13px/1.2 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      }
+      .status-actions button.secondary {
+        background: #ffffff;
+        color: #7c4b14;
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <iframe
+        id="cloud-frame"
+        class="cloud-frame"
+        title="飞猪运营助手"
+        sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-downloads"
+        allow="clipboard-write"
+      ></iframe>
+      <section id="status" class="status" aria-live="polite">
+        <div class="status-card">
+          <h1 class="status-title">正在加载运营助手</h1>
+          <p id="status-note" class="status-note">页面来自云端，更新后其他电脑重新打开插件即可看到新版本。</p>
+          <div class="status-actions">
+            <button id="reload-btn" type="button">重新加载</button>
+            <button id="local-btn" class="secondary" type="button">本地备用</button>
+          </div>
+        </div>
+      </section>
+      <div class="toolbar" aria-label="插件工具">
+        <button id="options-btn" type="button">设置</button>
+        <button id="fallback-btn" type="button">备用</button>
+      </div>
+    </main>
+    <script src="popup-shell.js"></script>
+  </body>
+</html>

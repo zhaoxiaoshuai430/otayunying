@@ -1,0 +1,655 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>飞猪运营助手</title>
+    <style>
+      :root {
+        --bg-top: #fffaf3;
+        --bg-bottom: #fff0d6;
+        --panel: rgba(255, 255, 255, 0.88);
+        --panel-strong: rgba(255, 248, 236, 0.98);
+        --text: #5f370f;
+        --muted: #8d6542;
+        --accent: #ef6c00;
+        --accent-strong: #c65a00;
+        --line: rgba(167, 115, 54, 0.18);
+        --ok: #0f9d58;
+        --error: #d93025;
+      }
+      body {
+        margin: 0;
+        width: 400px;
+        min-height: 780px;
+        background:
+          radial-gradient(circle at top right, rgba(255, 183, 77, 0.18), transparent 24%),
+          linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+        color: var(--text);
+        font: 14px/1.5 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      }
+      main {
+        padding: 14px;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      .lead {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .card {
+        margin-top: 14px;
+        padding: 14px;
+        border-radius: 18px;
+        background: var(--panel);
+        box-shadow: 0 12px 32px rgba(104, 54, 9, 0.1);
+      }
+      .card.hero {
+        background: linear-gradient(135deg, rgba(255, 183, 77, 0.2), rgba(255, 255, 255, 0.94));
+      }
+      .view-nav-card {
+        padding: 10px;
+      }
+      .view-nav {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .view-nav button {
+        padding: 10px 8px;
+        border-radius: 12px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--muted);
+        font-size: 12px;
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.12);
+      }
+      .view-nav button.active {
+        background: linear-gradient(135deg, #ffb648 0%, var(--accent) 100%);
+        color: #fffaf3;
+        box-shadow: none;
+      }
+      .workspace-nav-card {
+        padding: 10px;
+      }
+      .workspace-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .workspace-nav button {
+        min-width: 0;
+        padding: 10px 12px;
+        border-radius: 14px;
+        text-align: center;
+        white-space: nowrap;
+        background: rgba(255, 255, 255, 0.74);
+        color: var(--muted);
+        font-size: 12px;
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.14);
+      }
+      .workspace-nav button.active {
+        background: linear-gradient(135deg, #ffb648 0%, var(--accent) 100%);
+        color: #fffaf3;
+        box-shadow: 0 10px 22px rgba(239, 108, 0, 0.2);
+      }
+      .basic-section-nav-card {
+        padding: 10px;
+      }
+      .basic-section-nav {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .basic-section-nav button {
+        min-width: 0;
+        padding: 10px 8px;
+        border-radius: 14px;
+        text-align: center;
+        white-space: nowrap;
+        background: rgba(255, 255, 255, 0.74);
+        color: var(--muted);
+        font-size: 12px;
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.14);
+      }
+      .basic-section-nav button.active {
+        background: linear-gradient(135deg, #ffb648 0%, var(--accent) 100%);
+        color: #fffaf3;
+        box-shadow: 0 10px 22px rgba(239, 108, 0, 0.2);
+      }
+      .group-banner {
+        padding: 16px 16px 14px;
+        overflow: hidden;
+      }
+      .group-banner.basic {
+        background:
+          radial-gradient(circle at top right, rgba(255, 183, 77, 0.24), transparent 30%),
+          linear-gradient(135deg, rgba(255, 248, 236, 0.98), rgba(255, 255, 255, 0.92));
+      }
+      .group-banner.merchant {
+        background:
+          radial-gradient(circle at top right, rgba(239, 108, 0, 0.18), transparent 32%),
+          linear-gradient(135deg, rgba(255, 238, 224, 0.98), rgba(255, 255, 255, 0.92));
+      }
+      .group-banner-title {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .group-banner-note {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .group-banner-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .group-banner-tag {
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.88);
+        color: #7c4b14;
+        font-size: 11px;
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.14);
+      }
+      .section-title {
+        margin-bottom: 6px;
+        font-size: 12px;
+        color: #7c4b14;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .hero-title {
+        font-size: 17px;
+      }
+      .section-note {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: #d97706;
+      }
+      .dot.ok {
+        background: var(--ok);
+      }
+      .dot.error {
+        background: var(--error);
+      }
+      .grid {
+        display: grid;
+        gap: 10px;
+      }
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+      .field label {
+        color: #7c4b14;
+        font-size: 12px;
+      }
+      textarea,
+      input[type="text"],
+      input[type="password"],
+      input[type="url"],
+      input[type="number"],
+      select {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 10px 12px;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--text);
+        font: 13px/1.5 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      }
+      textarea {
+        min-height: 72px;
+        resize: vertical;
+      }
+      .actions {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      button {
+        border: none;
+        border-radius: 14px;
+        padding: 11px 12px;
+        background: #fff;
+        color: var(--text);
+        font: 600 13px/1.25 "Noto Sans SC", "Microsoft YaHei", sans-serif;
+        box-shadow: inset 0 0 0 1px var(--line);
+        cursor: pointer;
+        text-align: left;
+      }
+      button.primary {
+        background: linear-gradient(135deg, #ffb648 0%, var(--accent) 100%);
+        color: #fffaf3;
+        box-shadow: none;
+      }
+      button.danger {
+        background: linear-gradient(135deg, #ff9f68 0%, #d9480f 100%);
+        color: #fffaf3;
+        box-shadow: none;
+      }
+      button.secondary {
+        background: var(--panel-strong);
+      }
+      button:disabled,
+      input:disabled,
+      textarea:disabled {
+        opacity: 0.58;
+        cursor: wait;
+      }
+      .tip {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .summary-box {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 14px;
+        background: rgba(255, 183, 77, 0.12);
+        font-size: 12px;
+      }
+      .chart-shell {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.12);
+      }
+      .chart-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .chart-axis-labels {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .chart-legend {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .chart-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 12px;
+        background: rgba(255, 248, 236, 0.9);
+      }
+      .chart-swatch {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        flex: 0 0 10px;
+      }
+      .chart-legend-text {
+        flex: 1;
+        min-width: 0;
+      }
+      .chart-legend-title {
+        font-weight: 700;
+      }
+      .chart-legend-meta {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .advice-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .advice-item {
+        padding: 10px;
+        border-radius: 12px;
+        background: rgba(255, 248, 236, 0.9);
+      }
+      .advice-item-title {
+        font-weight: 700;
+      }
+      .advice-item-detail {
+        margin-top: 4px;
+        color: var(--muted);
+      }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .summary-pill {
+        padding: 8px 10px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.78);
+      }
+      .summary-label {
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .summary-value {
+        margin-top: 4px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .workflow-tools {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .workflow-tools button {
+        padding: 10px;
+        font-size: 12px;
+      }
+      .workflow-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .workflow-item {
+        border-radius: 14px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: inset 0 0 0 1px rgba(167, 115, 54, 0.12);
+      }
+      .workflow-item-top {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+      .workflow-item-top input[type="checkbox"] {
+        margin-top: 3px;
+      }
+      .workflow-item-name {
+        font-weight: 700;
+      }
+      .workflow-item-meta {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .price-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+        font-size: 12px;
+      }
+      .price-grid-label {
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+      .meta {
+        display: grid;
+        gap: 6px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+      }
+      .label {
+        flex: 0 0 70px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .value {
+        flex: 1;
+        word-break: break-word;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .tag {
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255, 184, 72, 0.22);
+        color: #7c4b14;
+        font-size: 12px;
+      }
+      .mono {
+        white-space: pre-wrap;
+        word-break: break-word;
+        font: 12px/1.5 Consolas, "Courier New", monospace;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 700;
+        list-style: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      .details-body {
+        margin-top: 12px;
+      }
+      .result {
+        min-height: 72px;
+        word-break: break-word;
+      }
+      .empty-state {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>飞猪运营助手</h1>
+      <p class="lead">把竞对抓价、建议调价和官网直改，收进同一个原生 Popup。</p>
+
+      <div class="card" data-workspace-group="basic">
+        <div class="status">
+          <span class="dot" id="status-dot"></span>
+          <span id="status-text">检查中...</span>
+        </div>
+      </div>
+
+      <div class="card hero" id="workspace-gate">
+        <h2 class="section-title">打开设置</h2>
+        <p class="hero-title" id="workspace-gate-title">账号登录、当前页面和当前配置已迁到设置页。</p>
+        <p class="section-note" id="workspace-gate-note">请先在设置页登录并选择店铺，再回到 Popup 使用这里的工作台。</p>
+        <div class="actions" style="margin-top: 12px; grid-template-columns: 1fr;">
+          <button class="primary" id="workspace-gate-btn" type="button">打开设置页</button>
+        </div>
+      </div>
+
+      <div id="app-shell" class="hidden">
+      <div class="card group-banner basic hidden">
+        <div class="section-title">基础功能</div>
+        <div class="group-banner-title">页面采集、竞对配置和建议价</div>
+        <div class="group-banner-note">这里集中处理服务检查、页面采集、竞对酒店配置和建议价生成。</div>
+        <div class="group-banner-tags">
+          <span class="group-banner-tag">检查服务</span>
+          <span class="group-banner-tag">按当前页采集</span>
+          <span class="group-banner-tag">查看竞对价格</span>
+          <span class="group-banner-tag">生成建议价</span>
+        </div>
+      </div>
+
+      <div class="card group-banner merchant" data-workspace-group="merchant">
+        <div class="section-title">商家改价</div>
+        <div class="group-banner-title">按房型生成建议价，人工确认后提交</div>
+        <div class="group-banner-note">这里默认接管飞猪平台价格页，按不同房型结合竞对价生成建议，一键回填后仍需人工确认提交。</div>
+        <div class="group-banner-tags">
+          <span class="group-banner-tag">生成建议价</span>
+          <span class="group-banner-tag">一键回填建议价</span>
+          <span class="group-banner-tag">调整最终价</span>
+          <span class="group-banner-tag">确认后提交</span>
+        </div>
+      </div>
+
+      <div class="card hero" data-workspace-group="merchant">
+        <h2 class="section-title">竞对驱动改价</h2>
+        <p class="hero-title">飞猪平台价格页一键回填建议价，再确认最终价。</p>
+        <p class="section-note">&#20808;&#25235;&#21462;&#31454;&#23545;&#25151;&#22411;&#20215;&#65292;&#20877;&#32467;&#21512;&#20320;&#30340;&#25151;&#22411;&#26144;&#23556;&#21644;&#24211;&#23384;&#29983;&#25104;&#24314;&#35758;&#65307;&#24050;&#32500;&#25252;&#8220;&#25105;&#30340;&#25151;&#22411;&#8221;&#26102;&#20250;&#20248;&#20808;&#25353;&#20320;&#30340;&#25151;&#22411;&#21517;&#31216;&#36755;&#20986;&#12290;</p>
+        <div class="grid">
+          <div class="field">
+            <label for="competitor-name-input">竞对酒店名称</label>
+            <input id="competitor-name-input" type="text" placeholder="例如：杭州君悦酒店">
+          </div>
+          <div class="field">
+            <label for="workflow-price-url-input">飞猪平台价格页</label>
+            <input id="workflow-price-url-input" type="url" value="https://hotel.fliggy.com/ebooking/hotelBaseInfoUv.htm#/ebk-rp/roomsVsManage">
+          </div>
+        </div>
+        <div class="actions" style="margin-top: 12px;">
+          <button class="secondary" id="workflow-load-btn" type="button">读取当前页房型价</button>
+          <button class="primary" id="workflow-analyze-btn" type="button">生成房型建议价</button>
+          <button class="secondary" id="workflow-fill-btn" type="button">一键回填建议价</button>
+          <button class="danger" id="workflow-submit-btn" type="button">确认最终价并提交</button>
+        </div>
+        <div id="workflow-box" class="summary-box">
+          <div class="empty-state">先点击“查看竞对价格”，再生成建议价；已维护我的房型映射时会优先按这些房型输出。</div>
+        </div>
+      </div>
+
+      <div class="card" data-workspace-group="basic" data-basic-section="room-prices">
+        <h2 class="section-title">配置竞对房型价</h2>
+        <p class="section-note">&#36825;&#37324;&#35835;&#21462;&#24403;&#21069;&#24215;&#38138;&#24050;&#20445;&#23384;&#30340;&#31454;&#23545;&#37202;&#24215;&#37197;&#32622;&#65292;&#24182;&#25353;&#37197;&#32622;&#35814;&#24773;&#39029;&#25235;&#21462;&#31454;&#23545;&#25151;&#22411;&#20215;&#12290;</p>
+        <div id="configured-hotels-box" class="summary-box">
+          <div class="empty-state">读取竞对酒店配置中...</div>
+        </div>
+        <div class="actions" style="margin-top: 12px; grid-template-columns: 1fr;">
+          <button class="primary" id="room-prices-btn" type="button">查看竞对价格</button>
+          <button class="secondary hidden" id="refresh-room-config-btn" type="button">&#21047;&#26032;&#31454;&#23545;&#37197;&#32622;</button>
+          <button class="secondary hidden" id="debug-room-config-btn" type="button">&#35786;&#26029;&#31454;&#23545;&#37197;&#32622;</button>
+          <button class="secondary hidden" id="open-room-settings-btn" type="button">维护竞对酒店</button>
+        </div>
+        <div id="competitor-room-prices-box" class="summary-box" style="margin-top: 12px;">
+          <div class="empty-state">抓取完成后，会直接在这里展示竞对房型价。</div>
+        </div>
+      </div>
+
+            <div class="card" data-workspace-group="basic" data-basic-section="advice">
+        <h2 class="section-title">我的价格</h2>
+        <p class="section-note">优先使用后端已维护的我的房型价格和房型映射；整店兜底价仅在没有房型价格时作为补充。</p>
+        <div class="field" style="margin-top: 10px;">
+          <label for="competitor-trend-series-select">趋势维度</label>
+          <select id="competitor-trend-series-select">
+            <option value="room_category">主流房型最低价</option>
+            <option value="hotel_min_price">竞对酒店最低价</option>
+          </select>
+        </div>
+        <div class="actions" style="margin-top: 12px; grid-template-columns: 1fr;">
+          <button class="secondary" id="competitor-trend-refresh-btn" type="button">刷新竞对趋势图</button>
+        </div>
+        <div id="competitor-trend-box" class="summary-box">
+          <div class="empty-state">正在加载竞对趋势...</div>
+        </div>
+        <div class="grid two">
+          <div class="field">
+            <label for="competitor-advice-total-rooms-input">总房量</label>
+            <input id="competitor-advice-total-rooms-input" type="number" min="1" step="1" placeholder="例如：120">
+          </div>
+          <div class="field">
+            <label for="competitor-advice-available-rooms-input">可售房量</label>
+            <input id="competitor-advice-available-rooms-input" type="number" min="0" step="1" placeholder="例如：36">
+          </div>
+          <div class="field">
+            <label for="competitor-advice-current-price-input">整店兜底价（选填）</label>
+            <input id="competitor-advice-current-price-input" type="number" min="1" step="0.01" placeholder="没有本店房型快照时才使用，例如：429">
+          </div>
+          <div class="field">
+            <label for="competitor-advice-strategy-select">策略</label>
+            <select id="competitor-advice-strategy-select">
+              <option value="balanced">balanced</option>
+              <option value="conservative">conservative</option>
+              <option value="aggressive">aggressive</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-top: 10px;">
+            <label for="competitor-advice-hotel-input">指定竞对酒店（可选）</label>
+            <input id="competitor-advice-hotel-input" type="text" placeholder="留空则综合本次抓到的所有竞对酒店">
+          </div>
+        <div id="competitor-advice-box" class="summary-box">
+          <div class="empty-state">先点击上方“查看竞对价格”，再生成建议价。</div>
+        </div>
+        <div class="actions" style="margin-top: 12px; grid-template-columns: 1fr;">
+          <button class="primary" id="competitor-advice-btn" type="button">生成建议价</button>
+        </div>
+      </div>
+
+      <div class="card" data-workspace-group="merchant">
+        <h2 class="section-title">高级备用：统一目标价</h2>
+        <p class="section-note">&#20165;&#36866;&#29992;&#20110;&#20320;&#24050;&#32463;&#22312;&#32447;&#19979;&#30830;&#35748;&#25152;&#26377;&#21487;&#25552;&#20132;&#25151;&#22411;&#37117;&#35201;&#20351;&#29992;&#21516;&#19968;&#30446;&#26631;&#20215;&#30340;&#22330;&#26223;&#65307;&#20248;&#20808;&#20351;&#29992;&#19978;&#26041;&#8220;&#25353;&#25151;&#22411;&#24314;&#35758;&#20215;&#8221;&#20027;&#27969;&#31243;&#12290;</p>
+        <div class="grid">
+          <div class="field">
+            <label for="uniform-price-url-input">调价官网链接</label>
+            <input id="uniform-price-url-input" type="url" placeholder="https://...">
+          </div>
+          <div class="field">
+            <label for="uniform-target-price-input">目标价格</label>
+            <input id="uniform-target-price-input" type="number" min="1" step="0.01" placeholder="例如：429">
+          </div>
+        </div>
+        <div class="actions" style="margin-top: 12px; grid-template-columns: 1fr;">
+          <button class="secondary" id="uniform-submit-btn" type="button">确认统一价提交</button>
+        </div>
+      </div>
+
+      <div class="card" data-workspace-group="basic" data-basic-section="quick-actions">
+        <h2 class="section-title">快捷动作</h2>
+        <p class="section-note">当前页识别、采集、面板和设置入口集中放在这里，切到这个分组时只展示快捷动作相关内容。</p>
+        <div class="grid">
+          <div class="actions">
+            <button id="status-btn" type="button">检查服务</button>
+            <button id="refresh-btn" type="button">刷新页面识别</button>
+            <button class="primary" id="collect-btn" type="button">按当前页采集</button>
+            <button id="panel-btn" type="button">打开页面面板</button>
+            <button id="options-btn" type="button">打开设置页</button>
+          </div>
+          <div class="field">
+            <label for="targets-input">当前页采集指定酒店</label>
+            <textarea id="targets-input" placeholder="一行一个酒店名，也支持逗号分隔"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">返回结果</h2>
+        <div class="result" id="result-box">尚未执行动作。</div>
+      </div>
+      </div>
+    </main>
+    <script src="content/result-view.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
+
+

@@ -1,0 +1,23 @@
+# Upstream / external clones (not part of this app)
+_openclaw_upstream/
+
+# Agent / plan artifacts
+.helloagents/
+private-secrets/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs and temp
+*.log
+.run/
+.logs/
+__pycache__/
+*.pyc
+apps/backend/.flask.pid
+apps/backend/.pytest_cache/
+apps/backend/.venv/
+apps/backend/.playwright/

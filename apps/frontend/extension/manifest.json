@@ -1,0 +1,69 @@
+{
+  "manifest_version": 3,
+  "name": "飞猪运营助手",
+  "version": "0.3.0",
+  "description": "在飞猪相关页面和浏览器 Popup 中打开本地完整运营助手，并保留云端 UI 作为 HTTP 测试入口。",
+  "permissions": [
+    "alarms",
+    "notifications",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*",
+    "http://49.232.42.9/*",
+    "http://ebooking.fliggy.com/*",
+    "http://api.aihuawise.com/*",
+    "https://*.fliggy.com/*",
+    "https://*.taobao.com/*",
+    "https://*.alitrip.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "飞猪运营助手",
+    "default_popup": "popup.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; frame-src 'self' http://api.aihuawise.com;"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://ebooking.fliggy.com/*",
+        "https://*.fliggy.com/*",
+        "https://*.taobao.com/*",
+        "https://*.alitrip.com/*"
+      ],
+      "js": [
+        "content/page-context.js",
+        "content/result-view.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "bridge.html",
+        "bridge.js",
+        "popup-shell.html",
+        "popup-shell.js",
+        "popup.html",
+        "popup.js",
+        "content/result-view.js"
+      ],
+      "matches": [
+        "http://ebooking.fliggy.com/*",
+        "https://*.fliggy.com/*",
+        "https://*.taobao.com/*",
+        "https://*.alitrip.com/*"
+      ]
+    }
+  ]
+}
+

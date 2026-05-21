@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>飞猪运营助手</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="header">
+        <div>
+          <h1>飞猪运营助手</h1>
+          <p id="host-note">云端 UI 已加载</p>
+        </div>
+        <button id="settings-btn" class="icon-btn" type="button" title="设置">设置</button>
+      </header>
+
+      <nav class="tabs" aria-label="工作区">
+        <button class="active" type="button" data-view="market">基础功能</button>
+        <button type="button" data-view="merchant">商家改价</button>
+      </nav>
+
+      <section id="market-view" class="view active">
+        <div class="grid two">
+          <button id="service-btn" type="button">检查服务</button>
+          <button id="context-btn" type="button">页面识别</button>
+          <button id="panel-btn" type="button">打开页面面板</button>
+          <button id="room-prices-btn" class="primary" type="button">查看竞对价格</button>
+        </div>
+
+        <article class="card">
+          <h2>我的价格</h2>
+          <div class="form-grid">
+            <label>总房量<input id="total-rooms-input" type="number" min="1" step="1" placeholder="120"></label>
+            <label>可售房量<input id="available-rooms-input" type="number" min="0" step="1" placeholder="36"></label>
+            <label>当前售价<input id="current-price-input" type="number" min="1" step="0.01" placeholder="429"></label>
+            <label>策略
+              <select id="strategy-select">
+                <option value="balanced">balanced</option>
+                <option value="conservative">conservative</option>
+                <option value="aggressive">aggressive</option>
+              </select>
+            </label>
+          </div>
+          <button id="advice-btn" class="primary full" type="button">生成建议价</button>
+        </article>
+      </section>
+
+      <section id="merchant-view" class="view">
+        <article class="card">
+          <h2>按房型建议价</h2>
+          <p>读取当前飞猪商家后台页面房型价，生成建议后仍需人工确认。</p>
+          <div class="grid two">
+            <button id="merchant-load-btn" type="button">读取当前页房型价</button>
+            <button id="merchant-preview-btn" class="primary" type="button">生成房型建议价</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="result-card">
+        <div class="result-header">
+          <span id="status-dot" class="dot"></span>
+          <span id="status-text">等待操作</span>
+        </div>
+        <pre id="result-box">云端页面通过插件壳调用本机能力，多台电脑互不共享当前页面状态。</pre>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>

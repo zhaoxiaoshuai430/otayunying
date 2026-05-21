@@ -1,0 +1,20 @@
+﻿{
+  "name": "ai-poc-local",
+  "interface": {
+    "displayName": "AI PoC Local Plugins"
+  },
+  "plugins": [
+    {
+      "name": "fliggy-ops",
+      "source": {
+        "source": "local",
+        "path": "./plugins/fliggy-ops"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
