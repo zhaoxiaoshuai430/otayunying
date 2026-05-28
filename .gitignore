@@ -21,3 +21,13 @@ apps/backend/.flask.pid
 apps/backend/.pytest_cache/
 apps/backend/.venv/
 apps/backend/.playwright/
+
+.env
+.env.*
+!.env.example
+
+
+.env
+.env.*
+!.env.example
+
